@@ -8,10 +8,5 @@ public class Licenser {
         if (trainingHours >= 40 && testPassed)
             return true;
         return false;
-
     }
-
-
-
-
 }

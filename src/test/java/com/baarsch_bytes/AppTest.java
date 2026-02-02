@@ -17,10 +17,7 @@ public class AppTest {
         assertTrue(true);
     }
 
-    @Test
-    public void hoursUnder40() {
 
-    }
 
 
 
