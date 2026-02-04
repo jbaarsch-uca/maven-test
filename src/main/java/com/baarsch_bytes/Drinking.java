@@ -4,7 +4,7 @@ public class Drinking {
 
     boolean canIDrink(int age){
         if (age >= 21)
-            return false;
+            return true;
         return false;
     }
 

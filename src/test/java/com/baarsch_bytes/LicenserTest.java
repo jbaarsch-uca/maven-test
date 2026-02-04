@@ -1,14 +1,37 @@
 package com.baarsch_bytes;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class LicenserTest {
 
+    private Licenser licenser;
+
+    @BeforeEach
+    void testSetup(){
+        licenser = new Licenser();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "39.9, true, false",    // trainingHours, testPassed, expectedResult
+            "40.0, true, true",
+            "50, false, false"
+    })
+    void testTrainingHoursAndTestPassed(double trainingHours, boolean testPassed, boolean expectedResult) {
+        assertEquals(expectedResult,
+                licenser.issueLicense(trainingHours, testPassed),
+                "Failed at: \nhours: " + trainingHours + "\ntestPassed: " + testPassed);
+    }
+/*
+
     @Test
     public void testIssueLicense_Success() {
-        Licenser licenser = new Licenser();
-
         boolean result = licenser.issueLicense(40.0, true);
 
         assertTrue(result, "License should be issued when hours >= 40 and test is passed");
@@ -16,7 +39,6 @@ public class LicenserTest {
 
     @Test
     void testIssueLicense_FailsDueToHours() {
-        Licenser licenser = new Licenser();
         // Act
         boolean result = licenser.issueLicense(39.9, true);
         // Assert
@@ -25,12 +47,11 @@ public class LicenserTest {
 
     @Test
     void testIssueLicense_FailsDueToTest() {
-        Licenser licenser = new Licenser();
         // Act
         boolean result = licenser.issueLicense(50.0, false);
         // Assert
         assertFalse(result, "License should not be issued if the test was not passed.");
     }
-
+*/
 
 }
