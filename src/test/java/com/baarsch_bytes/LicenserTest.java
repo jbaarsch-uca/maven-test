@@ -12,14 +12,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 public class LicenserTest {
 
     private Licenser licenser;
-    public final String[] testCases1 =
-            {       "39.9, true, false",    // trainingHours, testPassed, expectedResult
-                    "40.0, true, true",
-                    "50, false, false"
-            };
-    public static String testCase1 = "39.9, true, false";
-    public static String testCase2 = "40.0, true, true";
-    public static String testCase3 = "50, false, false";
+
+    public static final String testCase1 = "39.9, true, false";
+    public static final String testCase2 = "40.0, true, true";
+    public static final String testCase3 = "50, false, false";
 
 
     @BeforeEach
@@ -28,15 +24,16 @@ public class LicenserTest {
     }
 
     //@CsvSource(TestCases.testCases1)
-
+/*
     @ParameterizedTest
-    /*@CsvSource({
+    //@CsvFileSource(resources="/Book1.csv")
+    @CsvSource({
             "39.9, true, false",    // trainingHours, testPassed, expectedResult
             "40.0, true, true",
             "50, false, false"
-    })*/
-    @CsvFileSource(resources="/Book1.csv")
-    //@CsvSource("Book1.csv")
+    })
+    */
+    @ParamTest
     void testTrainingHoursAndTestPassed(double trainingHours, boolean testPassed, boolean expectedResult) {
         assertEquals(expectedResult,
                 licenser.issueLicense(trainingHours, testPassed),
