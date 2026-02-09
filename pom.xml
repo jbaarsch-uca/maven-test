@@ -113,8 +113,8 @@
       </plugins>
     </pluginManagement>
 
+    <!-- actual plugins not pluginManagement -->
     <plugins>
-
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -134,9 +134,10 @@
               <goal>report</goal>
             </goals>
           </execution>
+          <!-- 3. Checks the line coverage before moving to the next step -->
           <execution>
             <id>check-line-coverage</id>
-            <phase>test</phase>
+            <phase>verify</phase>
             <goals>
               <goal>check</goal>
             </goals>
