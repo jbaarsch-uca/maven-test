@@ -1,6 +1,8 @@
 package com.baarsch_bytes;
 
+import com.baarsch_bytes.Exceptions.GuestAgeReservationException;
 import com.baarsch_bytes.Exceptions.NightReservationException;
+import com.baarsch_bytes.Exceptions.ReservationException;
 
 public class ReserveMyPark {
 
@@ -17,9 +19,12 @@ public class ReserveMyPark {
 
     public double calculateStayPrice(int nights, int guestAge,
                        boolean isArkansasResident,
-                       boolean hasVeteranDiscount) throws Exception {
+                       boolean hasVeteranDiscount) throws ReservationException {
         if (nights < MIN_STAY || nights > MAX_STAY)
             throw new NightReservationException(nights);
+
+        if (guestAge < 0)
+            throw new GuestAgeReservationException(guestAge);
 
         // calculate base rate
         double price = nights * BASE_PRICE;
