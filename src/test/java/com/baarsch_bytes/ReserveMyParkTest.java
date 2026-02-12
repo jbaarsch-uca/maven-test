@@ -25,7 +25,7 @@ public class ReserveMyParkTest {
                                       boolean isVeteran, String exception) throws ClassNotFoundException {
         ReserveMyPark reserver = new ReserveMyPark();
 
-        Class<? extends ReservationException> exceptionClass =  (Class<? extends ReservationException>) Class.forName(exception);
+        Class<? extends Throwable> exceptionClass =  (Class<? extends Throwable>) Class.forName(exception);
         assertThrows(exceptionClass, () -> {
             reserver.calculateStayPrice(nights, age, isResident, isVeteran);
         }, "Reserve My Park test case " + testCase + " failed.");
