@@ -16,9 +16,12 @@ public class OnlineSalesTest {
     @CsvFileSource(resources="/OnlineSalesDiscount_tests.csv", numLinesToSkip = 1)
     public void testGiveDiscount(String id, @ConvertWith(LongConstantConverter.class) long bonusPoints, boolean goldCustomer,
                                  OnlineSalesOld.Status expected) {
+
+        OnlineSalesRevised salesComputer = new OnlineSalesRevised();
+
         assertEquals(expected,
                // OnlineSalesOld.giveDiscount(bonusPoints, goldCustomer) );
-                OnlineSalesRevised.giveDiscount(bonusPoints, goldCustomer) );
+                salesComputer.giveDiscount(bonusPoints, goldCustomer) );
     }
 
 

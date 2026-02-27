@@ -20,7 +20,7 @@ public class OnlineSalesRevised {
      * FULL_PRICE - charge the full price<br>
      * ERROR - invalid inputs
      */
-    public static OnlineSalesOld.Status giveDiscount(long bonusPoints, boolean goldCustomer) {
+    public OnlineSalesOld.Status giveDiscount(long bonusPoints, boolean goldCustomer) {
         Status rv = ERROR;
         long threshold = goldCustomer? 80 : 120;
         long thresholdJump = goldCustomer? 20 : 30;
