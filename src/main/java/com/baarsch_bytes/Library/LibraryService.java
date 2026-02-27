@@ -1,5 +1,8 @@
 package com.baarsch_bytes.Library;
 
+import com.baarsch_bytes.Exceptions.DatabaseFailureException;
+import com.baarsch_bytes.Exceptions.EmailFailureException;
+
 import java.util.UUID;
 
 public class LibraryService {
@@ -12,7 +15,7 @@ public class LibraryService {
         this.resourceRepository = resourceRepository;
     }
 
-    public boolean checkoutResource(UUID resourceId, String memberEmail) {
+    public boolean checkoutResource(UUID resourceId, String memberEmail) throws DatabaseFailureException, EmailFailureException {
         // ID validation is simpler because UUID cannot be "empty" like a String
         if (resourceId == null) return false;
 
@@ -20,8 +23,17 @@ public class LibraryService {
             return false;
         }
 
-        return resourceRepository.updateStatus(resourceId, false) &&
-            emailProvider.sendEmail(memberEmail, "Resource ID: " + resourceId + " checked out.");
+        boolean statusUpdated = resourceRepository.updateStatus(resourceId, false);
+        if(!statusUpdated) {
+            throw new DatabaseFailureException("Could not check out item.");
+        }
+
+        boolean emailSent = emailProvider.sendEmail(memberEmail, "Resource ID: " + resourceId + " checked out.");
+        if (!emailSent) {
+            throw new EmailFailureException("Could not send email.");
+        }
+        return  true;
+
     }
 
 }

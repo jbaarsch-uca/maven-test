@@ -1,5 +1,7 @@
 package com.baarsch_bytes.Library;
 
+import com.baarsch_bytes.Exceptions.DatabaseFailureException;
+
 import java.util.UUID;
 
 public interface ResourceRepository {
@@ -8,5 +10,5 @@ public interface ResourceRepository {
     boolean isResourceAvailable(UUID resource);
 
     // Update Status of resource to check out or return.
-    boolean updateStatus(UUID resource, boolean available);
+    boolean updateStatus(UUID resource, boolean available) throws DatabaseFailureException;
 }
