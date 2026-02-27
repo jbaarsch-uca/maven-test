@@ -2,7 +2,7 @@ package com.baarsch_bytes.Library;
 
 import java.util.UUID;
 
-public interface ResourceRespository {
+public interface ResourceRepository {
 
     // Check whether resource is available.
     boolean isResourceAvailable(UUID resource);

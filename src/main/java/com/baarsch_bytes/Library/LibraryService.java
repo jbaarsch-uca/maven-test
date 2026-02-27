@@ -5,9 +5,9 @@ import java.util.UUID;
 public class LibraryService {
 
     private final EmailProvider emailProvider;
-    private final ResourceRespository resourceRepository;
+    private final ResourceRepository resourceRepository;
 
-    public LibraryService(EmailProvider emailProvider, ResourceRespository resourceRepository) {
+    public LibraryService(EmailProvider emailProvider, ResourceRepository resourceRepository) {
         this.emailProvider = emailProvider;
         this.resourceRepository = resourceRepository;
     }
