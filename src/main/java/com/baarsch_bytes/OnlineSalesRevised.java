@@ -26,7 +26,7 @@ public class OnlineSalesRevised {
         long thresholdJump = goldCustomer? 20 : 30;
 
         if (bonusPoints > 0) {
-            if (bonusPoints < threshold) {
+            if (bonusPoints < thresholdJump) {
                 bonusPoints -= threshold;
             }
             if (bonusPoints > thresholdJump) {
