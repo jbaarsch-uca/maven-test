@@ -1,8 +1,8 @@
 package com.baarsch_bytes.Library;
 
 import com.baarsch_bytes.Library.EmailProvider;
-import com.baarsch_bytes.Library.Exceptions.DatabaseFailureException;
-import com.baarsch_bytes.Library.Exceptions.EmailFailureException;
+import com.baarsch_bytes.Exceptions.DatabaseFailureException;
+import com.baarsch_bytes.Exceptions.EmailFailureException;
 import com.baarsch_bytes.Library.LibraryService;
 import com.baarsch_bytes.Library.ResourceRepository;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LibraryServiceTester {
+public class LibraryServiceTest {
 
     @Mock
     ResourceRepository mockRR;
