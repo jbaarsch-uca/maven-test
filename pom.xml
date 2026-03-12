@@ -86,7 +86,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-h2console</artifactId>
     </dependency>
-
+    <!-- Add Spring boot validation to automatically validate entities -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
 
   </dependencies>
 
@@ -193,6 +197,33 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>run-postman-tests</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>newman</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>${project.basedir}/src/test/resources/postman/SRDPMCollection.json</argument>
+                <argument>-e</argument>
+                <argument>${project.basedir}/src/test/resources/postman/Local.postman_environment.json</argument>
+                <argument>-r</argument>
+                <argument>cli,json</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+
     </plugins>
 
   </build>
