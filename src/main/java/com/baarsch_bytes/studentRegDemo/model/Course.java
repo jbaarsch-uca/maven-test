@@ -56,7 +56,6 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
-
     private Set<Student> roster = new HashSet<>();
 
     public Course() {}
