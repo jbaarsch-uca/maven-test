@@ -17,11 +17,13 @@ public class OnlineSalesTest {
     public void testGiveDiscount(String id, @ConvertWith(LongConstantConverter.class) long bonusPoints, boolean goldCustomer,
                                  OnlineSalesOld.Status expected) {
 
+        // demonstrates an error that can only be found by all-paths testing.
         OnlineSalesRevised salesComputer = new OnlineSalesRevised();
 
         assertEquals(expected,
-               // OnlineSalesOld.giveDiscount(bonusPoints, goldCustomer) );
-                salesComputer.giveDiscount(bonusPoints, goldCustomer) );
+                OnlineSalesOld.giveDiscount(bonusPoints, goldCustomer) );
+
+               // salesComputer.giveDiscount(bonusPoints, goldCustomer) );
     }
 
 
