@@ -16,8 +16,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+// Cross origin is important to allow Typescript requests to come to this service.  However,
+// I don't want to hardcode my localhost into my file, so I set up a CORS allowed-origins in the
+// application.properties, so that the cross origin can be handled in configuration.
+// additionally the WebConfig class in /config makes the cross origin apply to all Controllers
+// without needing specific annotations.
 @RestController
 @RequestMapping("/api/courses")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class CourseController {
     private final CourseRepository repository;
     StudentRepository studentRepository;

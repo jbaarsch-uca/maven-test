@@ -1,0 +1,24 @@
+// Matches Student.java
+export interface Student {
+    id?: number;
+    name: string;
+    gpa: number;
+}
+
+// Matches CourseResponse (the @GetMapping return type)
+export interface CourseResponse {
+    id: number;
+    name: string;
+    instructor: string;
+    room: string;
+    roster: string[]; // Set of student names
+}
+
+// Matches CourseRequest (the @PostMapping/@PutMapping input type)
+export interface CourseRequest {
+    name: string;
+    instructor: string;
+    maxSize: number;
+    room: string;
+    roster?: number[]; // List of Student IDs
+}
