@@ -1,6 +1,6 @@
 import { CourseResponse, CourseRequest } from '../types/student-reg-types';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL + "/courses" || 'http://localhost:8080/api';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL + "/courses" || 'http://localhost:8080/api/courses';
 
 export const CourseService = {
     // Matches @GetMapping in CourseController
@@ -26,8 +26,21 @@ export const CourseService = {
 
     // GET /api/courses/getEnrollment/{courseId}
     async getEnrollmentCount(courseId: number): Promise<number> {
-        const response = await fetch(`${BASE_URL}/courses/getEnrollment/${courseId}`);
+        const response = await fetch(`${BASE_URL}/getEnrollment/${courseId}`);
         if (!response.ok) return -1;
         return response.json();
+    },
+
+    async addCourse(course: Partial<CourseRequest>): Promise<CourseResponse> {
+        const response = await fetch(`${BASE_URL}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(course),
+        });
+        return response.json();
+    },
+
+    async deleteCourse(id: number): Promise<void> {
+        await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
     }
 };

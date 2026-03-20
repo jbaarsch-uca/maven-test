@@ -7,7 +7,7 @@ const CourseList: React.FC = () => {
     const [courses, setCourses] = useState<CourseResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
+    const [newCourseName, setNewCourseName] = useState("");
     // Fetch data on component load
     useEffect(() => {
         const loadCourses = async () => {
@@ -24,12 +24,35 @@ const CourseList: React.FC = () => {
         loadCourses();
     }, []);
 
+    const handleDelete = async (id: number) => {
+        try {
+            await CourseService.deleteCourse(id);
+            // This triggers a re-render without a page refresh!
+            setCourses(courses.filter(c => c.id !== id));
+        } catch (err) {
+            alert("Delete failed!");
+        }
+    };
+
+    const handleAdd = async () => {
+        const savedCourse = await CourseService.addCourse(
+            { name: newCourseName });
+        setCourses([...courses, savedCourse]); // Add the new one to the list
+        setNewCourseName(""); // Clear the input
+    };
+
     if (loading) return <div>Loading courses from Spring Boot...</div>;
     if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
     return (
         <div className="course-container">
-            <h1>Available Courses</h1>
+            <input
+                value={newCourseName}
+                onChange={(e) => setNewCourseName(e.target.value)}
+                placeholder="New Course Name"
+            ></input>
+            <button onClick={handleAdd}>Add Course</button>
+            <h1>Available Courses Now</h1>
             <table>
                 <thead>
                 <tr>
@@ -38,6 +61,7 @@ const CourseList: React.FC = () => {
                     <th>Room</th>
                     <th>Enrolled Count</th>
                     <th>Roster</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,6 +72,11 @@ const CourseList: React.FC = () => {
                         <td>{course.room}</td>
                         <td>{course.roster.length}</td>
                         <td>{course.roster.join(', ') || 'Empty'}</td>
+                        <td>
+                            <button onClick={() => handleDelete(course.id)} style={{color: 'red'}}>
+                                Delete
+                            </button>
+                        </td>
                     </tr>
                 ))}
                 </tbody>
