@@ -77,7 +77,7 @@ const CourseList: React.FC = () => {
             <input
                 value={newCourseInstructor}
                 onChange={(e) => setNewCourseInstructor(e.target.value)}
-                placeholder = "Instructor Name"
+                placeholder = "Instructor ID Number"
             ></input>
             <input
                 value ={newCourseMaxSize}
