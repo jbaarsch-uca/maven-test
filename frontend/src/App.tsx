@@ -8,7 +8,7 @@ function App() {
             <nav style={{ padding: '1rem', background: '#282c34', color: 'white' }}>
                 <h1>Student Registration Portal</h1>
             </nav>
-            <h1>Hello World, Again!</h1>
+            <p></p>
             <div>
                 <CourseList />
             </div>

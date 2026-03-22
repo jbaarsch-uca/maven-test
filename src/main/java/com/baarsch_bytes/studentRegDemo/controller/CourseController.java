@@ -44,6 +44,7 @@ public class CourseController {
                     response.setId(course.getId());
                     response.setName(course.getName());
                     response.setInstructor(course.getInstructor());
+                    response.setMaxSize(course.getMaxSize());
                     response.setRoom(course.getRoom());
                     response.setRoster(
                             course.getRoster().stream()

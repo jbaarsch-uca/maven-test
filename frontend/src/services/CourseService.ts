@@ -40,6 +40,15 @@ export const CourseService = {
         return response.text();
     },
 
+    async updateCourse(id: number, course: Partial<CourseRequest>): Promise<string> {
+        const response = await fetch(`${BASE_URL}/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(course),
+        });
+        return response.text();
+    },
+
     async deleteCourse(id: number): Promise<void> {
         await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
     }

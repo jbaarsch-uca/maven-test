@@ -10,6 +10,7 @@ export interface CourseResponse {
     id: number;
     name: string;
     instructor: string;
+    maxSize: number;
     room: string;
     roster: string[]; // Set of student names
 }

@@ -11,6 +11,13 @@ const CourseList: React.FC = () => {
     const [newCourseInstructor, setNewCourseInstructor] = useState("");
     const [newCourseMaxSize, setNewCourseMaxSize] = useState("");
     const [newCourseRoom, setNewCourseRoom] = useState("");
+    const [editingCourseId, setEditingCourseId] = useState<number | null>(null);
+    const [editForm, setEditorForm] = useState({
+        name: "",
+        instructor: "",
+        maxSize: "",
+        room: ""
+    });
     // The fetch data function.
     const loadCourses = async () => {
         try {
@@ -23,11 +30,35 @@ const CourseList: React.FC = () => {
         }
     };
 
+    const handleEditClick = (course: any) => {
+        setEditingCourseId(course.id);
+        setEditorForm({
+            name: course.name || "",
+            instructor: course.instructor ? course.instructor.toString() : "",
+            maxSize: course.maxSize? course.maxSize.toString() : "",
+            room: course.room || ""
+        });
+    };
 
-    // Fetch data on component load
-    useEffect(() => {
-        loadCourses();
-    }, []);
+    const handleSaveEdit = async (id:number) => {
+        try {
+            const updatedData = {
+                name: editForm.name,
+                instructor: parseInt(editForm.instructor),
+                maxSize: parseInt(editForm.maxSize),
+                room: editForm.room
+            };
+
+            // Send PUT request to your Spring Boot controller
+            await CourseService.updateCourse(id, updatedData);
+
+            // Close the edit row and refresh the list
+            setEditingCourseId(null);
+            await loadCourses();
+        } catch (err) {
+            console.error("Failed to update course: ", err);
+        }
+    };
 
     const handleDelete = async (id: number) => {
         try {
@@ -63,6 +94,11 @@ const CourseList: React.FC = () => {
 
             };
 
+    // Fetch data on component load
+    useEffect(() => {
+        loadCourses();
+    }, []);
+
     if (loading) return <div>Loading courses from Spring Boot...</div>;
     if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
@@ -97,26 +133,75 @@ const CourseList: React.FC = () => {
                 <tr>
                     <th>Course Name</th>
                     <th>Instructor</th>
+                    <th>Max Size</th>
                     <th>Room</th>
                     <th>Enrolled Count</th>
                     <th>Roster</th>
                     <th>Delete</th>
+                    <th>Edit</th>
                 </tr>
                 </thead>
                 <tbody>
                 {courses.map(course => (
+                    <React.Fragment key={course.id}>
                     <tr key={course.id}>
                         <td>{course.name}</td>
                         <td>{course.instructor}</td>
+                        <td>{course.maxSize}</td>
                         <td>{course.room}</td>
-                        <td>{course.roster.length}</td>
-                        <td>{course.roster.join(', ') || 'Empty'}</td>
+                        <td>{course.roster? course.roster.length: 0}</td>
+                        <td>{course.roster? course.roster.join(', ') : 'Empty'}</td>
                         <td>
                             <button onClick={() => handleDelete(course.id)} style={{color: 'red'}}>
                                 Delete
                             </button>
                         </td>
+                        <td>
+                            <button onClick={() => handleEditClick(course)} style={{color: 'blue'}}>
+                                Edit
+                            </button>
+                        </td>
                     </tr>
+                {/* Row 2: The Conditional Edit Row */}
+                {editingCourseId === course.id && (
+                    <tr style={{ backgroundColor: '#f0f8ff' }}>
+                <td colSpan={7}> {/* Spans across all columns */}
+                    <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>
+                        <input
+                            value={editForm.name}
+                            onChange={(e) =>
+                                setEditorForm({...editForm, name: e.target.value})}
+                            placeholder="Course Name"
+                        />
+                        <input
+                            value={editForm.instructor}
+                            onChange={(e) =>
+                                setEditorForm({...editForm, instructor: e.target.value})}
+                            placeholder="Instructor ID"
+                        />
+                        <input
+                            value={editForm.maxSize}
+                            onChange={(e) =>
+                                setEditorForm({...editForm, maxSize: e.target.value})}
+                            placeholder="Max Size"
+                        />
+                        <input
+                            value={editForm.room}
+                            onChange={(e) =>
+                                setEditorForm({...editForm, room: e.target.value})}
+                            placeholder="Room"
+                        />
+                        <button onClick={() => handleSaveEdit(course.id)} style={{color: 'green'}}>
+                            Save
+                        </button>
+                        <button onClick={() => setEditingCourseId(null)}>
+                            Cancel
+                        </button>
+                    </div>
+                </td>
+                </tr>
+                )}
+            </React.Fragment>
                 ))}
                 </tbody>
             </table>
