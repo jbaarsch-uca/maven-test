@@ -17,7 +17,7 @@ export interface CourseResponse {
 // Matches CourseRequest (the @PostMapping/@PutMapping input type)
 export interface CourseRequest {
     name: string;
-    instructor: string;
+    instructor: number;
     maxSize: number;
     room: string;
     roster?: number[]; // List of Student IDs

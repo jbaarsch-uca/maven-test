@@ -8,19 +8,24 @@ const CourseList: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [newCourseName, setNewCourseName] = useState("");
+    const [newCourseInstructor, setNewCourseInstructor] = useState("");
+    const [newCourseMaxSize, setNewCourseMaxSize] = useState("");
+    const [newCourseRoom, setNewCourseRoom] = useState("");
+    // The fetch data function.
+    const loadCourses = async () => {
+        try {
+            const data = await CourseService.getAllCourses();
+            setCourses(data);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     // Fetch data on component load
     useEffect(() => {
-        const loadCourses = async () => {
-            try {
-                const data = await CourseService.getAllCourses();
-                setCourses(data);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'An error occurred');
-            } finally {
-                setLoading(false);
-            }
-        };
-
         loadCourses();
     }, []);
 
@@ -35,24 +40,58 @@ const CourseList: React.FC = () => {
     };
 
     const handleAdd = async () => {
+        // inputs always want to handle strings, so convert the max size to a number
+        const numericSize = parseInt(newCourseMaxSize.trim());
+        const numericInstructor = parseInt(newCourseInstructor.trim());
+        // try to save the course.
         const savedCourse = await CourseService.addCourse(
-            { name: newCourseName });
-        setCourses([...courses, savedCourse]); // Add the new one to the list
+            { name: newCourseName,
+            instructor: numericInstructor,
+            maxSize: numericSize,
+            room: newCourseRoom,
+            roster: undefined
+            });
+        console.log("I saved the courses--now, to update the fields.")
+        // refresh the list of courses
+        await loadCourses();
+        //reset all the fields to clear the data
+
         setNewCourseName(""); // Clear the input
-    };
+        setNewCourseInstructor("");
+        setNewCourseMaxSize("");
+        setNewCourseRoom("");
+
+            };
 
     if (loading) return <div>Loading courses from Spring Boot...</div>;
     if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
     return (
+
         <div className="course-container">
             <input
                 value={newCourseName}
                 onChange={(e) => setNewCourseName(e.target.value)}
                 placeholder="New Course Name"
             ></input>
+            <input
+                value={newCourseInstructor}
+                onChange={(e) => setNewCourseInstructor(e.target.value)}
+                placeholder = "Instructor Name"
+            ></input>
+            <input
+                value ={newCourseMaxSize}
+                onChange={(e) => setNewCourseMaxSize(e.target.value)}
+                placeholder={"MaxSize"}
+            ></input>
+            <input
+                value={newCourseRoom}
+                onChange={(e) => setNewCourseRoom(e.target.value)}
+                placeholder={"Room"}
+            ></input>
+
             <button onClick={handleAdd}>Add Course</button>
-            <h1>Available Courses Now</h1>
+            <h1>Available Courses</h1>
             <table>
                 <thead>
                 <tr>

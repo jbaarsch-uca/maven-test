@@ -31,13 +31,13 @@ export const CourseService = {
         return response.json();
     },
 
-    async addCourse(course: Partial<CourseRequest>): Promise<CourseResponse> {
+    async addCourse(course: Partial<CourseRequest>): Promise<string> {
         const response = await fetch(`${BASE_URL}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(course),
         });
-        return response.json();
+        return response.text();
     },
 
     async deleteCourse(id: number): Promise<void> {
