@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CourseResponse } from '../types/student-reg-types';
 import { CourseService } from '../services/CourseService';
+import { StudentService } from '../services/StudentService';
 
 const CourseList: React.FC = () => {
     // State to store our courses
@@ -18,15 +19,47 @@ const CourseList: React.FC = () => {
         maxSize: "",
         room: ""
     });
+    const [allStudents, setAllStudents] = useState<any[]>([]);
+    // Keeps track of the selected student for each row.
+    // Example: { 1: "105", 2: "108" } -> Course 1 selected Student 105
+    const [selectedStudents, setSelectedStudents] = useState<Record<number, string>>({});
+
     // The fetch data function.
     const loadCourses = async () => {
         try {
             const data = await CourseService.getAllCourses();
             setCourses(data);
+            const studentData = await StudentService.getAllStudents();
+            setAllStudents(studentData);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An error occurred');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleAddStudent = async (courseId: number) => {
+        // Look up the selected student ID for this specific course row
+        const studentIdString = selectedStudents[courseId];
+
+        if (!studentIdString) {
+            alert("Please select a student first.");
+            return;
+        }
+
+        try {
+            const studentId = parseInt(studentIdString);
+
+            // Call your Service
+            await CourseService.addStudentToCourse(courseId, studentId);
+
+            // Refresh the table to show the new roster
+            await loadCourses();
+
+            // Optional: Reset the dropdown for this row back to default
+            setSelectedStudents({ ...selectedStudents, [courseId]: "" });
+        } catch (err) {
+            console.error("Failed to add student to course:", err);
         }
     };
 
@@ -139,44 +172,70 @@ const CourseList: React.FC = () => {
                     <th>Roster</th>
                     <th>Delete</th>
                     <th>Edit</th>
+                    <th>Add Student</th>
                 </tr>
                 </thead>
                 <tbody>
                 {courses.map(course => (
                     <React.Fragment key={course.id}>
-                    <tr key={course.id}>
-                        <td>{course.name}</td>
-                        <td>{course.instructor}</td>
-                        <td>{course.maxSize}</td>
-                        <td>{course.room}</td>
-                        <td>{course.roster? course.roster.length: 0}</td>
-                        <td>{course.roster? course.roster.join(', ') : 'Empty'}</td>
-                        <td>
-                            <button onClick={() => handleDelete(course.id)} style={{color: 'red'}}>
-                                Delete
-                            </button>
-                        </td>
-                        <td>
-                            <button onClick={() => handleEditClick(course)} style={{color: 'blue'}}>
-                                Edit
-                            </button>
-                        </td>
-                    </tr>
-                {/* Row 2: The Conditional Edit Row */}
-                {editingCourseId === course.id && (
-                    <tr style={{ backgroundColor: '#f0f8ff' }}>
-                <td colSpan={7}> {/* Spans across all columns */}
-                    <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>
-                        <input
-                            value={editForm.name}
-                            onChange={(e) =>
-                                setEditorForm({...editForm, name: e.target.value})}
-                            placeholder="Course Name"
-                        />
-                        <input
-                            value={editForm.instructor}
-                            onChange={(e) =>
-                                setEditorForm({...editForm, instructor: e.target.value})}
+                        <tr key={course.id}>
+                            <td>{course.name}</td>
+                            <td>{course.instructor}</td>
+                            <td>{course.maxSize}</td>
+                            <td>{course.room}</td>
+                            <td>{course.roster ? course.roster.length : 0}</td>
+                            <td>{course.roster ? course.roster.join(', ') : 'Empty'}</td>
+                            <td>
+                                <button onClick={() => handleDelete(course.id)} style={{color: 'red'}}>
+                                    Delete
+                                </button>
+                            </td>
+                            <td>
+                                <button onClick={() => handleEditClick(course)} style={{color: 'blue'}}>
+                                    Edit
+                                </button>
+                            </td>
+                            <td>
+                                <div style={{display: 'flex', gap: '5px'}}>
+                                    <select
+                                        value={selectedStudents[course.id] || ""}
+                                        onChange={(e) => setSelectedStudents({
+                                            ...selectedStudents,
+                                            [course.id]: e.target.value
+                                        })}
+                                    >
+                                        <option value="" disabled>Select a Student</option>
+                                        {allStudents.map(student => (
+                                            <option key={student.id} value={student.id}>
+                                                {student.name} {/* Adjust based on your student object */}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    <button
+                                        onClick={() => handleAddStudent(course.id)}
+                                        style={{color: 'green'}}
+                                    >
+                                        Add Student
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {/* Row 2: The Conditional Edit Row */}
+                        {editingCourseId === course.id && (
+                            <tr style={{backgroundColor: '#f0f8ff'}}>
+                                <td colSpan={7}> {/* Spans across all columns */}
+                                    <div style={{display: 'flex', gap: '10px', padding: '10px'}}>
+                                        <input
+                                            value={editForm.name}
+                                            onChange={(e) =>
+                                                setEditorForm({...editForm, name: e.target.value})}
+                                            placeholder="Course Name"
+                                        />
+                                        <input
+                                            value={editForm.instructor}
+                                            onChange={(e) =>
+                                                setEditorForm({...editForm, instructor: e.target.value})}
                             placeholder="Instructor ID"
                         />
                         <input
