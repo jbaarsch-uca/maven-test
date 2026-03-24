@@ -1,7 +1,15 @@
 // Matches Student.java
-export interface Student {
+export interface StudentResponse {
+    id: number;
+    name: string;
+    major: string;
+    gpa: number;
+}
+
+export interface StudentRequest {
     id?: number;
     name: string;
+    major: string;
     gpa: number;
 }
 

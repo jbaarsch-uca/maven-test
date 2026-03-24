@@ -137,23 +137,23 @@ const CourseList: React.FC = () => {
 
     return (
 
-        <div className="course-container">
-            <input
+        <div id="new-course-fields" className="course-container">
+            <input id="new-course-name"
                 value={newCourseName}
                 onChange={(e) => setNewCourseName(e.target.value)}
                 placeholder="New Course Name"
             ></input>
-            <input
+            <input id="new-course-instructor"
                 value={newCourseInstructor}
                 onChange={(e) => setNewCourseInstructor(e.target.value)}
                 placeholder = "Instructor ID Number"
             ></input>
-            <input
+            <input id="new-course-max-size"
                 value ={newCourseMaxSize}
                 onChange={(e) => setNewCourseMaxSize(e.target.value)}
                 placeholder={"MaxSize"}
             ></input>
-            <input
+            <input id="new-course-room"
                 value={newCourseRoom}
                 onChange={(e) => setNewCourseRoom(e.target.value)}
                 placeholder={"Room"}
@@ -161,7 +161,7 @@ const CourseList: React.FC = () => {
 
             <button onClick={handleAdd}>Add Course</button>
             <h1>Available Courses</h1>
-            <table>
+            <table id = "course-list-table">
                 <thead>
                 <tr>
                     <th>Course Name</th>
@@ -178,26 +178,26 @@ const CourseList: React.FC = () => {
                 <tbody>
                 {courses.map(course => (
                     <React.Fragment key={course.id}>
-                        <tr key={course.id}>
-                            <td>{course.name}</td>
-                            <td>{course.instructor}</td>
-                            <td>{course.maxSize}</td>
-                            <td>{course.room}</td>
-                            <td>{course.roster ? course.roster.length : 0}</td>
+                        <tr key={course.id} id = {`course-row-${course.id}`}>
+                            <td id = {`course-name-${course.id}`}>{course.name}</td>
+                            <td id = {`course-instructor-${course.id}`}>{course.instructor}</td>
+                            <td id = {`course-max-size-${course.id}`}>{course.maxSize}</td>
+                            <td id = {`course-room-${course.id}`}>{course.room}</td>
+                            <td id = {`course-roster-${course.id}`}>{course.roster ? course.roster.length : 0}</td>
                             <td>{course.roster ? course.roster.join(', ') : 'Empty'}</td>
                             <td>
-                                <button onClick={() => handleDelete(course.id)} style={{color: 'red'}}>
+                                <button id = "delete-course-button" onClick={() => handleDelete(course.id)} style={{color: 'red'}}>
                                     Delete
                                 </button>
                             </td>
                             <td>
-                                <button onClick={() => handleEditClick(course)} style={{color: 'blue'}}>
+                                <button id = "edit-course-button" onClick={() => handleEditClick(course)} style={{color: 'blue'}}>
                                     Edit
                                 </button>
                             </td>
                             <td>
                                 <div style={{display: 'flex', gap: '5px'}}>
-                                    <select
+                                    <select id = "select-student"
                                         value={selectedStudents[course.id] || ""}
                                         onChange={(e) => setSelectedStudents({
                                             ...selectedStudents,
@@ -212,7 +212,7 @@ const CourseList: React.FC = () => {
                                         ))}
                                     </select>
 
-                                    <button
+                                    <button id = "add-student-button"
                                         onClick={() => handleAddStudent(course.id)}
                                         style={{color: 'green'}}
                                     >
@@ -226,34 +226,34 @@ const CourseList: React.FC = () => {
                             <tr style={{backgroundColor: '#f0f8ff'}}>
                                 <td colSpan={7}> {/* Spans across all columns */}
                                     <div style={{display: 'flex', gap: '10px', padding: '10px'}}>
-                                        <input
+                                        <input id ="edit-course-name"
                                             value={editForm.name}
                                             onChange={(e) =>
                                                 setEditorForm({...editForm, name: e.target.value})}
                                             placeholder="Course Name"
                                         />
-                                        <input
+                                        <input id ="edit-course-instructor"
                                             value={editForm.instructor}
                                             onChange={(e) =>
                                                 setEditorForm({...editForm, instructor: e.target.value})}
                             placeholder="Instructor ID"
                         />
-                        <input
+                        <input id ="edit-course-max-size"
                             value={editForm.maxSize}
                             onChange={(e) =>
                                 setEditorForm({...editForm, maxSize: e.target.value})}
                             placeholder="Max Size"
                         />
-                        <input
+                        <input id ="edit-course-room"
                             value={editForm.room}
                             onChange={(e) =>
                                 setEditorForm({...editForm, room: e.target.value})}
                             placeholder="Room"
                         />
-                        <button onClick={() => handleSaveEdit(course.id)} style={{color: 'green'}}>
+                        <button id ="edit-course-save-button" onClick={() => handleSaveEdit(course.id)} style={{color: 'green'}}>
                             Save
                         </button>
-                        <button onClick={() => setEditingCourseId(null)}>
+                        <button id ="edit-course-cancel-button" onClick={() => setEditingCourseId(null)}>
                             Cancel
                         </button>
                     </div>

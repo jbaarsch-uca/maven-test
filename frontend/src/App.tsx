@@ -15,8 +15,8 @@ function App() {
                 <h2 style={{ margin: 0 }}>My School App</h2>
                 <div className= "nav-links">
                     {/* Use <Link> instead of <a> tags so the page doesn't hard-refresh */}
-                    <Link to="/" className="nav-link">Courses</Link>
-                    <Link to="/students" className="nav-link">Students</Link>
+                    <Link id = "nav-course-list-link" to="/" className="nav-link">Courses</Link>
+                    <Link id = "nav-student-list-link" to="/students" className="nav-link">Students</Link>
                 </div>
             </nav>
             <div className = "main-content">
