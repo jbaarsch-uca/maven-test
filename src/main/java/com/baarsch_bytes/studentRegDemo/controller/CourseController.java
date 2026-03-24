@@ -44,6 +44,7 @@ public class CourseController {
                     response.setId(course.getId());
                     response.setName(course.getName());
                     response.setInstructor(course.getInstructor());
+                    response.setMaxSize(course.getMaxSize());
                     response.setRoom(course.getRoom());
                     response.setRoster(
                             course.getRoster().stream()
@@ -144,6 +145,15 @@ public class CourseController {
             //It might confuse people--but we'll throw it somewhere in the docs.
             return ResponseEntity.badRequest().body(-1L);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteCourse(@PathVariable Long courseId) {
+        if (repository.existsById(courseId)) {
+            repository.deleteById(courseId);
+            return ResponseEntity.ok("Course " + courseId + " deleted successfully");
+        }
+        return ResponseEntity.badRequest().body("Course not found");
     }
 
 

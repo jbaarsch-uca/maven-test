@@ -1,23 +1,46 @@
-import {Student} from "../types/student-reg-types";
+import {CourseRequest, StudentResponse, StudentRequest} from "../types/student-reg-types";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL + '/students' || 'http://localhost:8080/api/students';
 
 export const StudentService = {
 
 
     // GET /api/students
-    async getAllStudents(): Promise<Student[]> {
-        const response = await fetch(`${BASE_URL}/students`);
+    async getAllStudents(): Promise<StudentResponse[]> {
+        const response = await fetch(`${BASE_URL}`);
         return response.json();
     },
 
     // POST /api/students
-    async createStudent(student: Student): Promise<{message: string}> {
-        const response = await fetch(`${BASE_URL}/students`, {
+    async createStudent(student: StudentRequest): Promise<{message: string}> {
+        const response = await fetch(`${BASE_URL}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(student)
         });
         return response.json();
+    },
+
+
+    async addStudent(student: Partial<StudentRequest>): Promise<string> {
+        const response = await fetch(`${BASE_URL}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(student),
+        });
+        return response.text();
+    },
+
+    async updateStudent(id: number, student: Partial<StudentRequest>): Promise<string> {
+        const response = await fetch(`${BASE_URL}/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(student),
+        });
+        return response.text();
+    },
+
+    async deleteStudent(id: number): Promise<void> {
+        await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
     }
 };

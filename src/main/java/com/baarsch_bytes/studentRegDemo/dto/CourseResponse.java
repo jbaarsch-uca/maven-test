@@ -6,15 +6,17 @@ public class CourseResponse {
     private Long id;
     private String name;
     private Long instructor;
+    private Integer maxSize;
     private String room;
     private Set<String> roster;
 
     public CourseResponse(){}
-    public CourseResponse(Long id, String name, Long instructor,
+    public CourseResponse(Long id, String name, Long instructor, Integer maxSize,
                           String room, Set<String> roster) {
         this.id = id;
         this.name = name;
         this.instructor = instructor;
+        this.maxSize = maxSize;
         this.room = room;
         this.roster = roster;
     }
@@ -41,6 +43,14 @@ public class CourseResponse {
 
     public void setInstructor(Long instructor) {
         this.instructor = instructor;
+    }
+
+    public Integer getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(Integer maxSize) {
+        this.maxSize = maxSize;
     }
 
     public String getRoom() {
