@@ -102,25 +102,26 @@ const StudentList = () => {
     if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
 
-    return <div id = "add-student-fields" className="student-container">
-        <input id = "new-student-name"
-    value={newStudentName}
-    onChange={(e) => setNewStudentName(e.target.value)}
-    placeholder="New Student Name"
-        ></input>
-        <input id = "new-student-major"
-            value={newStudentMajor}
-            onChange={(e) => setNewStudentMajor(e.target.value)}
-            placeholder="New Student Major"
-        ></input>
-    <input id = "new-student-gpa"
-        value={newStudentGPA}
-        onChange={(e) => setNewStudentGPA(e.target.value)}
-        placeholder = "New Student GPA"
-    ></input>
+    return <div>
+        <div id = "add-student-fields" className="student-container">
+            <input id = "new-student-name"
+                value={newStudentName}
+                onChange={(e) => setNewStudentName(e.target.value)}
+                placeholder="New Student Name"
+            ></input>
+            <input id = "new-student-major"
+                value={newStudentMajor}
+                onChange={(e) => setNewStudentMajor(e.target.value)}
+                placeholder="New Student Major"
+            ></input>
+            <input id = "new-student-gpa"
+                value={newStudentGPA}
+                onChange={(e) => setNewStudentGPA(e.target.value)}
+                placeholder = "New Student GPA"
+            ></input>
 
-
-    <button id = "add-student-button" onClick={handleAdd}>Add Student</button>
+            <button id = "add-student-button" onClick={handleAdd}>Add Student</button>
+        </div>
     <h1>Students</h1>
     <table id = "student-list-table">
         <thead>
@@ -157,19 +158,19 @@ const StudentList = () => {
                     <tr style={{backgroundColor: '#f0f8ff'}}>
                         <td colSpan={7}> {/* Spans across all columns */}
                             <div style={{display: 'flex', gap: '10px', padding: '10px'}}>
-                                <input id = "edit-studnet-name"
+                                <input id = "edit-student-name"
                                     value={editForm.name}
                                     onChange={(e) =>
                                         setEditorForm({...editForm, name: e.target.value})}
                                     placeholder="Student Name"
                                 />
-                                <input id = "edit-studnet-major"
+                                <input id = "edit-student-major"
                                     value={editForm.major}
                                     onChange={(e) =>
                                         setEditorForm({...editForm, major: e.target.value})}
                                     placeholder="Student Major"
                                 />
-                                <input id = "edit-studnet-gpa"
+                                <input id = "edit-student-gpa"
                                     value={editForm.gpa}
                                     onChange={(e) =>
                                         setEditorForm({...editForm, gpa: e.target.value})}

@@ -19,6 +19,7 @@ const CourseList: React.FC = () => {
         maxSize: "",
         room: ""
     });
+    const [studentsToRemove, setStudentsToRemove] = useState<Record<number, string>>({});
     const [allStudents, setAllStudents] = useState<any[]>([]);
     // Keeps track of the selected student for each row.
     // Example: { 1: "105", 2: "108" } -> Course 1 selected Student 105
@@ -60,6 +61,29 @@ const CourseList: React.FC = () => {
             setSelectedStudents({ ...selectedStudents, [courseId]: "" });
         } catch (err) {
             console.error("Failed to add student to course:", err);
+        }
+    };
+
+    const handleRemoveStudent = async (courseId: number) => {
+        const studentIdString = studentsToRemove[courseId];
+
+        if (!studentIdString) {
+            alert("Please select a student to remove.");
+            return;
+        }
+
+        try {
+            const studentId = parseInt(studentIdString);
+
+            // Assuming you make a matching method in your CourseService
+            await CourseService.removeStudentFromCourse(courseId, studentId);
+
+            await loadCourses();
+
+            // Reset the dropdown for this row
+            setStudentsToRemove({ ...studentsToRemove, [courseId]: "" });
+        } catch (err) {
+            console.error("Failed to remove student:", err);
         }
     };
 
@@ -137,29 +161,31 @@ const CourseList: React.FC = () => {
 
     return (
 
-        <div id="new-course-fields" className="course-container">
-            <input id="new-course-name"
-                value={newCourseName}
-                onChange={(e) => setNewCourseName(e.target.value)}
-                placeholder="New Course Name"
-            ></input>
-            <input id="new-course-instructor"
-                value={newCourseInstructor}
-                onChange={(e) => setNewCourseInstructor(e.target.value)}
-                placeholder = "Instructor ID Number"
-            ></input>
-            <input id="new-course-max-size"
-                value ={newCourseMaxSize}
-                onChange={(e) => setNewCourseMaxSize(e.target.value)}
-                placeholder={"MaxSize"}
-            ></input>
-            <input id="new-course-room"
-                value={newCourseRoom}
-                onChange={(e) => setNewCourseRoom(e.target.value)}
-                placeholder={"Room"}
-            ></input>
+        <div>
+            <div id="new-course-fields" className="course-container">
+                <input id="new-course-name"
+                    value={newCourseName}
+                    onChange={(e) => setNewCourseName(e.target.value)}
+                    placeholder="New Course Name"
+                ></input>
+                <input id="new-course-instructor"
+                    value={newCourseInstructor}
+                    onChange={(e) => setNewCourseInstructor(e.target.value)}
+                    placeholder = "Instructor ID Number"
+                ></input>
+                <input id="new-course-max-size"
+                    value ={newCourseMaxSize}
+                    onChange={(e) => setNewCourseMaxSize(e.target.value)}
+                    placeholder={"MaxSize"}
+                ></input>
+                <input id="new-course-room"
+                    value={newCourseRoom}
+                    onChange={(e) => setNewCourseRoom(e.target.value)}
+                    placeholder={"Room"}
+                ></input>
 
-            <button onClick={handleAdd}>Add Course</button>
+                <button onClick={handleAdd}>Add Course</button>
+            </div>
             <h1>Available Courses</h1>
             <table id = "course-list-table">
                 <thead>
@@ -250,6 +276,37 @@ const CourseList: React.FC = () => {
                                 setEditorForm({...editForm, room: e.target.value})}
                             placeholder="Room"
                         />
+                        {/* --- REMOVE STUDENT SECTION --- */}
+                        <div style={{ display: 'flex', gap: '5px', marginTop: '10px' }}>
+                            <select
+                                id="remove-student-select" // Selenium ID!
+                                value={studentsToRemove[course.id] || ""}
+                                onChange={(e) => setStudentsToRemove({
+                                    ...studentsToRemove,
+                                    [course.id]: e.target.value
+                                })}
+                            >
+                                <option value="" disabled>Remove a Student</option>
+
+                                {/* Filter allStudents to ONLY show those currently in the course roster */}
+                                {allStudents
+                                    .filter(student => course.roster && course.roster.includes(student.name))
+                                    .map(enrolledStudent => (
+                                        <option key={enrolledStudent.id} value={enrolledStudent.id}>
+                                            {enrolledStudent.name}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+
+                            <button
+                                id="remove-student-button" // Selenium ID!
+                                onClick={() => handleRemoveStudent(course.id)}
+                                style={{color: 'red'}}
+                            >
+                                Remove Student
+                            </button>
+                        </div>
                         <button id ="edit-course-save-button" onClick={() => handleSaveEdit(course.id)} style={{color: 'green'}}>
                             Save
                         </button>

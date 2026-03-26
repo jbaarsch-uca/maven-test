@@ -24,6 +24,18 @@ export const CourseService = {
         return message;
     },
 
+    async removeStudentFromCourse(courseId:number, studentId:number): Promise<string> {
+        const response = await fetch(`${BASE_URL}/removeStudent/${courseId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(studentId)
+        });
+
+        const message = await response.text();
+        if (!response.ok) throw new Error(message);
+        return message;
+    },
+
     // GET /api/courses/getEnrollment/{courseId}
     async getEnrollmentCount(courseId: number): Promise<number> {
         const response = await fetch(`${BASE_URL}/getEnrollment/${courseId}`);
