@@ -157,19 +157,19 @@ const StudentList = () => {
                     <tr style={{backgroundColor: '#f0f8ff'}}>
                         <td colSpan={7}> {/* Spans across all columns */}
                             <div style={{display: 'flex', gap: '10px', padding: '10px'}}>
-                                <input id = "edit-studnet-name"
+                                <input id = "edit-student-name"
                                     value={editForm.name}
                                     onChange={(e) =>
                                         setEditorForm({...editForm, name: e.target.value})}
                                     placeholder="Student Name"
                                 />
-                                <input id = "edit-studnet-major"
+                                <input id = "edit-student-major"
                                     value={editForm.major}
                                     onChange={(e) =>
                                         setEditorForm({...editForm, major: e.target.value})}
                                     placeholder="Student Major"
                                 />
-                                <input id = "edit-studnet-gpa"
+                                <input id = "edit-student-gpa"
                                     value={editForm.gpa}
                                     onChange={(e) =>
                                         setEditorForm({...editForm, gpa: e.target.value})}
