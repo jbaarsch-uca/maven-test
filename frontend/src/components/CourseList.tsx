@@ -161,29 +161,31 @@ const CourseList: React.FC = () => {
 
     return (
 
-        <div id="new-course-fields" className="course-container">
-            <input id="new-course-name"
-                value={newCourseName}
-                onChange={(e) => setNewCourseName(e.target.value)}
-                placeholder="New Course Name"
-            ></input>
-            <input id="new-course-instructor"
-                value={newCourseInstructor}
-                onChange={(e) => setNewCourseInstructor(e.target.value)}
-                placeholder = "Instructor ID Number"
-            ></input>
-            <input id="new-course-max-size"
-                value ={newCourseMaxSize}
-                onChange={(e) => setNewCourseMaxSize(e.target.value)}
-                placeholder={"MaxSize"}
-            ></input>
-            <input id="new-course-room"
-                value={newCourseRoom}
-                onChange={(e) => setNewCourseRoom(e.target.value)}
-                placeholder={"Room"}
-            ></input>
+        <div>
+            <div id="new-course-fields" className="course-container">
+                <input id="new-course-name"
+                    value={newCourseName}
+                    onChange={(e) => setNewCourseName(e.target.value)}
+                    placeholder="New Course Name"
+                ></input>
+                <input id="new-course-instructor"
+                    value={newCourseInstructor}
+                    onChange={(e) => setNewCourseInstructor(e.target.value)}
+                    placeholder = "Instructor ID Number"
+                ></input>
+                <input id="new-course-max-size"
+                    value ={newCourseMaxSize}
+                    onChange={(e) => setNewCourseMaxSize(e.target.value)}
+                    placeholder={"MaxSize"}
+                ></input>
+                <input id="new-course-room"
+                    value={newCourseRoom}
+                    onChange={(e) => setNewCourseRoom(e.target.value)}
+                    placeholder={"Room"}
+                ></input>
 
-            <button onClick={handleAdd}>Add Course</button>
+                <button onClick={handleAdd}>Add Course</button>
+            </div>
             <h1>Available Courses</h1>
             <table id = "course-list-table">
                 <thead>

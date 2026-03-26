@@ -102,25 +102,26 @@ const StudentList = () => {
     if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
 
-    return <div id = "add-student-fields" className="student-container">
-        <input id = "new-student-name"
-    value={newStudentName}
-    onChange={(e) => setNewStudentName(e.target.value)}
-    placeholder="New Student Name"
-        ></input>
-        <input id = "new-student-major"
-            value={newStudentMajor}
-            onChange={(e) => setNewStudentMajor(e.target.value)}
-            placeholder="New Student Major"
-        ></input>
-    <input id = "new-student-gpa"
-        value={newStudentGPA}
-        onChange={(e) => setNewStudentGPA(e.target.value)}
-        placeholder = "New Student GPA"
-    ></input>
+    return <div>
+        <div id = "add-student-fields" className="student-container">
+            <input id = "new-student-name"
+                value={newStudentName}
+                onChange={(e) => setNewStudentName(e.target.value)}
+                placeholder="New Student Name"
+            ></input>
+            <input id = "new-student-major"
+                value={newStudentMajor}
+                onChange={(e) => setNewStudentMajor(e.target.value)}
+                placeholder="New Student Major"
+            ></input>
+            <input id = "new-student-gpa"
+                value={newStudentGPA}
+                onChange={(e) => setNewStudentGPA(e.target.value)}
+                placeholder = "New Student GPA"
+            ></input>
 
-
-    <button id = "add-student-button" onClick={handleAdd}>Add Student</button>
+            <button id = "add-student-button" onClick={handleAdd}>Add Student</button>
+        </div>
     <h1>Students</h1>
     <table id = "student-list-table">
         <thead>
