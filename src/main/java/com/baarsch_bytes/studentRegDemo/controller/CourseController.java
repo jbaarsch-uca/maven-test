@@ -61,16 +61,7 @@ public class CourseController {
 
         // translate between the dto from the frontend and the entity
         // ruled by the DB.
-        Course course = new Course();
-        course.setName(request.getName());
-        course.setInstructor(request.getInstructor());
-        course.setMaxSize(request.getMaxSize());
-        course.setRoom(request.getRoom());
-        if (request.getRoster() != null) {
-            List<Student> studentsFromDb =
-                    studentRepository.findAllById(request.getRoster());
-            course.setRoster(new HashSet<Student>(studentsFromDb));
-        }
+        Course course = translateRequestToCourse(request, new Course());
         // add course to db
         repository.save(course);
         return ResponseEntity.ok(course.getName() + " added successfully");
@@ -80,16 +71,7 @@ public class CourseController {
     public ResponseEntity<String> update(
             @Valid @RequestBody CourseRequest request
             , @PathVariable Long id) {
-        Course course = repository.findById(id).get();
-        course.setName(request.getName());
-        course.setInstructor(request.getInstructor());
-        course.setMaxSize(request.getMaxSize());
-        course.setRoom(request.getRoom());
-        if (request.getRoster() != null) {
-            List<Student> studentsFromDb =
-                    studentRepository.findAllById(request.getRoster());
-            course.setRoster(new HashSet<Student>(studentsFromDb));
-        }
+        Course course = translateRequestToCourse(request, repository.findById(id).get());
         // add course to db
         repository.save(course);
         return ResponseEntity.ok(course.getName() + " updated successfully");
@@ -156,5 +138,17 @@ public class CourseController {
         return ResponseEntity.badRequest().body("Course not found");
     }
 
+    private Course translateRequestToCourse(CourseRequest request, Course course) {
+        course.setName(request.getName());
+        course.setInstructor(request.getInstructor());
+        course.setMaxSize(request.getMaxSize());
+        course.setRoom(request.getRoom());
+        if (request.getRoster() != null) {
+            List<Student> studentsFromDb =
+                    studentRepository.findAllById(request.getRoster());
+            course.setRoster(new HashSet<Student>(studentsFromDb));
+        }
+        return course;
+    }
 
 }
