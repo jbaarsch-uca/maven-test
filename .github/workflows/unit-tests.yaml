@@ -1,0 +1,26 @@
+name: Automated Unit Tests
+
+# Triggers for the workflow
+on: [push]
+# on: 
+#  push: 
+#    branches: ["main"]
+
+jobs:
+  backend-tests:
+    name: Spring Boot Backend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Run Backend Unit Tests
+#        working-directory: ./backend   would use if in the multi-module project
+        run: mvn test
