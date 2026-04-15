@@ -4,7 +4,16 @@ name: Automated Unit Tests
 on: [push]
 # on: 
 #  push: 
-#    branches: ["main"]
+#    branches: ["master"]
+#  pull_request:
+#    branches: ["master"]
+
+# permissions required for Test reporting UI
+permissions:
+  contents: read
+  issues: read
+  checks: write
+  pull-requests: write
 
 jobs:
   backend-tests:
@@ -24,3 +33,10 @@ jobs:
       - name: Run Backend Unit Tests
 #        working-directory: ./backend   would use if in the multi-module project
         run: mvn test
+
+      - name: Publish Test Results GUI
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        # always() allows test results to be published even when tests fail.
+        if: always()
+        with:
+          files: "target/surefire-reports/*.xml"
