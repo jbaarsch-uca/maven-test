@@ -9,7 +9,7 @@ public class EnergyCalculator {
 
         double rebatePercent = 0.0;
 
-        if (kwh > 500 && kwh <= 1500) {
+        if (kwh > 500 && kwh > 1500) {
             if (hasSmartDevice && peakOptOut) {
                 rebatePercent = 0.15;
             } else if (hasSmartDevice || peakOptOut) {
