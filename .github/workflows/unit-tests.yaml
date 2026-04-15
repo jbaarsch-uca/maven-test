@@ -34,9 +34,18 @@ jobs:
 #        working-directory: ./backend   would use if in the multi-module project
         run: mvn test
 
+      # use this to show the test results at the bottom of the workflow run in GitHub actions
       - name: Publish Test Results GUI
         uses: EnricoMi/publish-unit-test-result-action@v2
         # always() allows test results to be published even when tests fail.
         if: always()
         with:
           files: "target/surefire-reports/*.xml"
+
+      # Makes the coverage report from autoamated cloud runs on GitHub visible after run.
+      - name: Upload Jacoco Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-coverage-report
+          path: "**/target/site/jacoco/"
