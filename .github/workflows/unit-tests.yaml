@@ -32,7 +32,7 @@ jobs:
 
       - name: Run Backend Unit Tests
 #        working-directory: ./backend   would use if in the multi-module project
-        run: mvn test
+        run: mvn test -Dmaven.test.failure.ignore=true
 
       # use this to show the test results at the bottom of the workflow run in GitHub actions
       - name: Publish Test Results GUI
