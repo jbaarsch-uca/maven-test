@@ -49,3 +49,11 @@ jobs:
         with:
           name: jacoco-coverage-report
           path: "**/target/site/jacoco/"
+
+      - name: Check for Test Failures
+        if: always()
+        run: |
+          if grep -q "<failure" target/surefire-reports/*.xml; then
+          echo "Tests failed, failing the build."
+          exit 1
+          fi
